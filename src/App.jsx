@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Step1Category from './pages/Step1Category';
@@ -8,27 +8,17 @@ import Results from './pages/Results';
 import Home from './pages/Home';
 import SoilAnalysis from './pages/SoilAnalysis';
 import Logo from './pages/Logo';
-import Login from './pages/Login';
 import { LanguageProvider } from './contexts/LanguageContext';
 
 function App() {
   const [showLogo, setShowLogo] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogoFinish = () => {
     setShowLogo(false);
   };
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
   if (showLogo) {
     return <Logo onFinish={handleLogoFinish} />;
-  }
-
-  if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />;
   }
 
   return (

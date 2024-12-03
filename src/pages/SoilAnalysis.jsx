@@ -197,6 +197,17 @@ const SoilAnalysis = () => {
 
       const soilType = prediction.class;
       const confidence = prediction.confidence;
+
+      // Check if confidence is below 50%
+      if (confidence < 0.5) {
+        alert('Please Upload the Correct Image');
+        setAnalysisResults(null);
+        setImage(null);
+        setPreview(null);
+        setAnalyzing(false);
+        return;
+      }
+
       const soilInfo = soilTypeMap[soilType] || {
         npk: [14, 14, 14],
         description: 'Standard balanced soil',
@@ -220,6 +231,7 @@ const SoilAnalysis = () => {
     } catch (error) {
       console.error('Soil analysis failed:', error);
       alert('Failed to analyze soil. Please try again.');
+      setAnalysisResults(null);
     } finally {
       setAnalyzing(false);
     }
@@ -364,7 +376,7 @@ const SoilAnalysis = () => {
         </div>
       </div>
 
-      {/* Analysis Results */}
+      {/* Analysis Results - Only show if results exist */}
       {analysisResults && (
         <div className="mt-8 bg-white rounded-xl p-8 shadow-sm">
           <div className="text-center mb-6">
