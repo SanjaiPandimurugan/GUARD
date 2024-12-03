@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
 import SensorCard from '../components/SensorCard';
+import soilAnalysisImage from '../assets/soil-analysis.jpg';
+import nutrientCalculatorImage from '../assets/nutrient-calculator.jpg';
 
 const Home = () => {
   const { currentLanguage } = useLanguage();
@@ -54,116 +56,128 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-4">
-      {/* Title Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-green-800">
-          {t.title}
-        </h1>
-        <p className="mt-3 text-xl text-gray-600">
-          {t.soilAnalysisDesc}
-        </p>
+      {/* Sensor Cards Section */}
+      <div className="mb-16">
+        <div className="flex items-center mb-8">
+          <div className="w-2 h-8 bg-green-600 rounded-full mr-4"></div>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Real-Time Nutrient Levels
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <SensorCard
+            title={t.nitrogenTitle}
+            value={sensorData.nitrogen.current}
+            unit="mg/kg"
+            icon={<Leaf size={24} />}
+            color="emerald"
+            data={sensorData.nitrogen.history}
+            range={sensorData.nitrogen.range}
+          />
+
+          <SensorCard
+            title="Phosphorus"
+            value={sensorData.phosphorous.current}
+            unit="ppm"
+            icon={<FlaskConical size={24} />}
+            color="blue"
+            data={sensorData.phosphorous.data}
+            range={sensorData.phosphorous.range}
+          />
+
+          <SensorCard
+            title={t.potassiumTitle}
+            value={sensorData.potassium.current}
+            unit="mg/kg"
+            icon={<Zap size={24} />}
+            color="amber"
+            data={sensorData.potassium.history}
+            range={sensorData.potassium.range}
+          />
+
+          <SensorCard
+            title="pH Level"
+            value={sensorData.ph.current}
+            unit="pH"
+            icon={<Droplets size={24} />}
+            color="rose"
+            data={sensorData.ph.history}
+            range={sensorData.ph.range}
+          />
+        </div>
       </div>
 
-      {/* NPK and pH Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <SensorCard
-          title={t.nitrogenTitle}
-          value={sensorData.nitrogen.current}
-          unit="mg/kg"
-          icon={<Leaf size={24} />}
-          color="emerald"
-          data={sensorData.nitrogen.history}
-          range={sensorData.nitrogen.range}
-        />
-
-        <SensorCard
-          title="Phosphorus"
-          value={sensorData.phosphorous.current}
-          unit="ppm"
-          icon={<FlaskConical size={24} />}
-          color="blue"
-          data={sensorData.phosphorous.data}
-          range={sensorData.phosphorous.range}
-        />
-
-        <SensorCard
-          title={t.potassiumTitle}
-          value={sensorData.potassium.current}
-          unit="mg/kg"
-          icon={<Zap size={24} />}
-          color="amber"
-          data={sensorData.potassium.history}
-          range={sensorData.potassium.range}
-        />
-
-        <SensorCard
-          title="pH Level"
-          value={sensorData.ph.current}
-          unit="pH"
-          icon={<Droplets size={24} />}
-          color="rose"
-          data={sensorData.ph.history}
-          range={sensorData.ph.range}
-        />
-      </div>
-
-      {/* Analysis and Calculator Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        {/* Soil Analysis Card */}
-        <Link to="/soil-analysis" className="group">
-          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-            <div className="flex items-center mb-4">
-              <div className="p-3 rounded-lg bg-blue-50 text-blue-600">
-                <FileSpreadsheet size={24} />
+      {/* Analysis and Calculator Options Section */}
+      <div className="mt-16">
+        <div className="flex items-center mb-8">
+          <div className="w-2 h-8 bg-gradient-to-b from-blue-600 to-green-600 rounded-full mr-4"></div>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Soil Analysis Tools
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Soil Analysis Card */}
+          <Link to="/soil-analysis" className="group">
+            <div className="bg-white rounded-xl transition-all duration-300 
+                          border-2 border-blue-200 hover:border-blue-400
+                          shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)]
+                          hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.2)]
+                          relative overflow-hidden h-[320px]">
+              <div className="absolute inset-0 bg-cover bg-center opacity-20"
+                   style={{ backgroundImage: `url(${soilAnalysisImage})` }}>
               </div>
-              <h3 className="text-xl font-semibold ml-4 text-gray-800 group-hover:text-blue-600 transition-colors">
-                {t.soilAnalysis}
-              </h3>
-            </div>
-            <p className="text-gray-600">
-              {t.soilAnalysisDesc}
-            </p>
-            <div className="mt-4 flex items-center text-blue-600">
-              <span className="text-sm font-medium">{t.analyzeSoil}</span>
-              <svg 
-                className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
-        </Link>
-
-        {/* Calculator Card */}
-        <Link to="/step1" className="group">
-          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-            <div className="flex items-center mb-4">
-              <div className="p-3 rounded-lg bg-green-50 text-green-600">
-                <Calculator size={24} />
+              
+              <div className="relative h-full p-6">
+                <div className="flex items-center mb-4">
+                  <div className="p-3 rounded-xl bg-blue-50 text-blue-600 
+                              border-2 border-blue-200 group-hover:scale-110 
+                              transition-transform duration-300
+                              shadow-[0_4px_12px_-2px_rgba(59,130,246,0.3)]">
+                    <FileSpreadsheet size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold ml-4 text-gray-800 group-hover:text-blue-600 transition-colors">
+                    Soil Analysis
+                  </h3>
+                </div>
+                
+                <p className="text-gray-600 ml-1 mb-4 text-sm leading-relaxed">
+                  Get comprehensive insights about your soil composition and health
+                </p>
               </div>
-              <h3 className="text-xl font-semibold ml-4 text-gray-800 group-hover:text-green-600 transition-colors">
-                {t.manualSelection}
-              </h3>
             </div>
-            <p className="text-gray-600">
-              {t.manualSelectionDesc}
-            </p>
-            <div className="mt-4 flex items-center text-green-600">
-              <span className="text-sm font-medium">{t.calculate}</span>
-              <svg 
-                className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+          </Link>
+
+          {/* Calculator Card */}
+          <Link to="/step1" className="group">
+            <div className="bg-white rounded-xl transition-all duration-300 
+                          border-2 border-green-200 hover:border-green-400
+                          shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)]
+                          hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.2)]
+                          relative overflow-hidden h-[320px]">
+              <div className="absolute inset-0 bg-cover bg-center opacity-20"
+                   style={{ backgroundImage: `url(${nutrientCalculatorImage})` }}>
+              </div>
+              
+              <div className="relative h-full p-6">
+                <div className="flex items-center mb-4">
+                  <div className="p-3 rounded-xl bg-green-50 text-green-600 
+                              border-2 border-green-200 group-hover:scale-110 
+                              transition-transform duration-300
+                              shadow-[0_4px_12px_-2px_rgba(34,197,94,0.3)]">
+                    <Calculator size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold ml-4 text-gray-800 group-hover:text-green-600 transition-colors">
+                    Nutrient Calculator
+                  </h3>
+                </div>
+                
+                <p className="text-gray-600 ml-1 mb-4 text-sm leading-relaxed">
+                  Calculate optimal nutrient requirements for your crops
+                </p>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   );
